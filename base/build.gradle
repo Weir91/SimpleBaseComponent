@@ -1,0 +1,103 @@
+apply from: "dependencies.gradle"
+
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+
+apply plugin: 'com.github.dcendents.android-maven'
+
+group='com.github.Weir91'
+
+android {
+    compileSdkVersion baseAndroid["compileSdkVersion"]
+
+    defaultConfig {
+        minSdkVersion baseAndroid["minSdkVersion"]
+        targetSdkVersion baseAndroid["targetSdkVersion"]
+        versionCode baseAndroid["versionCode"]
+        versionName baseAndroid["versionName"]
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    kapt {
+        arguments {
+            arg("AROUTER_MODULE_NAME", project.getName())
+        }
+    }
+
+    //jdk1.8
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+    api fileTree(include: ['*.jar'], dir: 'libs')
+
+    //android test
+    testImplementation baseDependencies["junit"]
+    androidTestImplementation baseDependencies["test-runner"]
+    androidTestImplementation baseDependencies["espresso"]
+
+    //kotlin
+    api baseDependencies["kotlin-stdlib"]
+
+    //android support
+    api baseDependencies["appcompat"]
+    api baseDependencies["constraintlayout"]
+    api baseDependencies["design"]
+
+    //network
+    api baseDependencies["retrofit"]
+    api baseDependencies["retrofit-converter-gson"]
+    api baseDependencies["retrofit-adapter-rxjava2"]
+    api baseDependencies["okhttp"]
+    api baseDependencies["logging-interceptor"]
+
+    //rx
+    api baseDependencies["rxjava2"]
+    api baseDependencies["rxandroid2"]
+    api baseDependencies["rxkotlin2"]
+
+    //router
+    api baseDependencies["arouter-api"]
+    kapt baseDependencies["arouter-compiler"]
+
+    //image
+    api baseDependencies["glide"]
+    kapt baseDependencies["glide-compiler"]
+    api baseDependencies["glide-transformations"]
+
+    //tools
+    api baseDependencies["eventbus"]
+    api baseDependencies["tedpermission"]
+    api baseDependencies["utilcode"]
+    api baseDependencies["imgsel"]
+
+    //view
+    api(baseDependencies["vlayout"]) {
+        transitive = true
+    }
+    api(baseDependencies["ultraviewpager"]) {
+        transitive = true
+    }
+    api baseDependencies["flexbox"]
+    api baseDependencies["aterial-dialogs"]
+    api baseDependencies["convenientbanner"]
+    api baseDependencies["qmui"]
+    api baseDependencies["circleimageview"]
+}
+repositories {
+    mavenCentral()
+}
